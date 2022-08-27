@@ -1,3 +1,5 @@
+package model;
+
 public class Controller {
 
 	public boolean simulate() {

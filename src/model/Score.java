@@ -1,3 +1,7 @@
+package model;
+
+import java.time.Duration;
+
 public class Score {
 
 	private String nickname;
