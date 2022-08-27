@@ -1,13 +1,6 @@
 package model;
 
 public enum PipeType {
-	;
-
-	private int START;
-	private int END;
-	private int HORIZONTAL;
-	private int VERTICAL;
-	private int INTERSECTION;
-	private int NULL;
+	START, END, HORIZONTAL, VERTICAL, INTERSECTION, NULL;
 
 }
