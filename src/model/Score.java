@@ -7,6 +7,8 @@ public class Score {
 	private String nickname;
 	private int score;
 	private Duration timer;
+	private Score rigth;
+	private Score left;
 
 	/**
 	 * 
@@ -14,17 +16,46 @@ public class Score {
 	 * @param score
 	 */
 	public Score(String nickname, int score) {
-		// TODO - implement Score.Score
-		throw new UnsupportedOperationException();
+		this.nickname = nickname;
+		this.score = score;
 	}
 
 	public String toString() {
-		// TODO - implement Score.toString
-		throw new UnsupportedOperationException();
+		return nickname + "		" + score + "		";
+	}
+
+	public String getNickname(){
+
+		return nickname;
+
 	}
 
 	public int getScore() {
 		return this.score;
+	}
+
+	public void setRight(Score rigth){
+	
+		this.rigth=rigth;
+
+	}
+
+	public void setLeft(Score left){
+	
+		this.left=left;
+
+	}
+
+	public Score getRight(){
+
+		return rigth;
+
+	}
+
+	public Score getLeft(){
+
+		return left;
+
 	}
 
 }
