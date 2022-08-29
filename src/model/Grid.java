@@ -47,10 +47,10 @@ public class Grid {
 	 * Initializes the quadruple linked list that is used to store the playboard, it creates rows in an "s" pattern
 	 * @param r Must be 1 when first called
 	 * @param c Must be 1 when first called
-	 * @param lastC Must be 1 when first called
+	 * @param lastC Must be 0 when first called
 	 * @param current Must be a new pipe type object when first called
 	 * @param last	Must be null when first called
-	 * @return
+	 * @return The head of the list
 	 */
 	public Pipe create(int r, int c, int lastC, Pipe current, Pipe last) {
 		
