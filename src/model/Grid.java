@@ -27,8 +27,8 @@ public class Grid {
 		grid.toString();
 		System.out.println(grid.simulate(grid.start, grid.start));
 	}
-
 	*/
+	
 
 	/**
 	 * 
@@ -41,6 +41,8 @@ public class Grid {
 		head = create(1,1,0,new Pipe(6, "1,1"), null);
 	}
 
+
+
 	/**
 	 * Initializes the quadruple linked list that is used to store the playboard, it creates rows in an "s" pattern
 	 * @param r Must be 1 when first called
@@ -48,72 +50,45 @@ public class Grid {
 	 * @param lastC Must be 0 when first called
 	 * @param current Must be a new pipe type object when first called
 	 * @param last	Must be null when first called
-	 * @return
+	 * @return The head of the list
 	 */
 	public Pipe create(int r, int c, int lastC, Pipe current, Pipe last) {
-		if (r==1&&c==1){//The first object to be created, the top right corner
-			current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));// creates a new pipe object and sets it as its right, it acomplishes this by calling the method create again.
+		
+		if (c>lastC){//This means the pipes are getting created to the right
+			current.setLeft(last);//sets its left to the last one
+			if (r!=1){//Unless it is located in thefirst row there is the need to set its upper pipe
+				current.setUp(current.getLeft().getUp().getRight());//travels trough adjacent pipes to get to the pipe that would be up
+				current.getUp().setDown(current);
+			}
+			if (c!=columns) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//If it isn't in the end it continues moving right
+			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));//If its in the end it moves down
 		}
-		else if (r==1&&c!=columns){//The case true for all objects part of the first row that aren't the first or the last
-			current.setLeft(last);//As the last is set to have this object as its right, the last is set as its left
-			current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//sets its right as a new instance of create that will return a pipe
-		}
-		else if (c==columns&&c!=lastC&&r==1){//The case for the leftmost object of the first row.
-			current.setLeft(last);
-			current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));//As there are not suposed to be objects to the right beyond this one, the pipe found below this pipe is set instead, efectively "going down."
-		}
-		else if (c==lastC&&c!=1){//The case for the leftmost pipe if the last pipe was above it, and it was a right-flowing row
-			current.setUp(last);//As the last pipe was above it, it is set as its upper pipe
-			current.setRight(create(r, c-1, c, new Pipe(6, r+","+(c-1)), current));//Because there are not suposed to be any more pipes to teh right of this pipe, and its last pipe was the en of its upper row, then it sets its left to continue the method
-		}
-		else if (c<lastC&&c!=1){//The case for any pipe if the direction of creation is left, and its not an extreme
+
+		else if (c<lastC){//This means the pipes are getting created to the left
 			current.setRight(last);
-			current.setUp(current.getRight().getUp().getLeft());//As it has a pipe above it, and no direct way to connect to it, it travels throgh the already conected right, its upper pipe, ans that pipe's left, with that pipe being above, that is set as its upper pipe
-			current.getUp().setDown(current);
-			current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c-1)), current));
-		}
-		else if (c==1&&c!=lastC&&r!=rows){//The case for the rightmost pipe of a row with left flowing creation
-			current.setRight(last);
+			if (r!=1){
 			current.setUp(current.getRight().getUp().getLeft());
 			current.getUp().setDown(current);
-			current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));//as there are not suposed to be any pipes to the left beyond this point, it sets its downward pipe
+			}
+			if (c!=1) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current));
+			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));
 		}
-		else if (c==1&&c==lastC){//The case for the rightmost pipe that is not part of the first lane and which last pipe was above it
+
+		else if (c==lastC){//This means its last pipe its abvove it
 			current.setUp(last);
-			current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//As there arenot suposed to be pipes to the left, the creation flow is set to the right
-		}
-		else if (c>lastC&&c!=columns){//The case for any pipe set in a right flowing row that is not the first one
-			current.setLeft(last);
-			current.setUp(current.getLeft().getUp().getRight());
-			current.getUp().setDown(current);
-			current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));
-		}
-		else if (c==columns&&c!=lastC&&r!=rows){//the case for the leftmost pipe in a right flowing row that isnt the first one
-			current.setLeft(last);
-			current.setUp(current.getLeft().getUp().getRight());
-			current.getUp().setDown(current);
-			current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));
+			if (c==1) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//depending on its position it sets the creation flow to the right or to the left
+			else current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current));
 		}
 
-		//The cases for the extemes in the last row
-		else if(c==columns&&c!=lastC&&r==rows){
-			current.setLeft(last);
-			current.setUp(current.getLeft().getUp().getRight());
-			current.getUp().setDown(current);
-		}
-		else if (c==1&&c!=lastC&&r==rows){
-			current.setRight(last);
-			current.setUp(current.getRight().getUp().getLeft());
-			current.getUp().setDown(current);
-		}
-
-		//Theoretically unreachable condition, used to signat that something went extremelly wrong
+		//Theoretically unreachable condition, used to signal that something went extremelly wrong
 		else {
 			System.out.println("Unknown error");
 		}
 
 		return current;//Returns itself to ensure every conection is filled
 	}
+
+
 
 	/**
 	 * Method to change the type of any pipe on the playboard
@@ -138,6 +113,9 @@ public class Grid {
 		else return false;//if the condition above was not met, then it means that the operation was unsuccesfull
 	}
 
+
+
+
 	/**
 	 * Prints a visual representation of the playboard
 	 */
@@ -157,6 +135,9 @@ public class Grid {
 		System.out.println(print);
 		return print;
 	}
+
+
+
 
 	/**
 	 * Checks if the conections made by the player are compatible withs each other, used to determine victory
@@ -223,6 +204,14 @@ public class Grid {
 
 	}
 
+
+	/**
+	 * Used to find where a certain pipe type is in relation to a pipe
+	 * @param pType
+	 * @param last
+	 * @param current
+	 * @return where it is or if it isn't
+	 */
 	public String checkExistenceOf(PipeType pType, Pipe last, Pipe current){
 		if(current.getRight()!=null&&current.getRight()!=last&&current.getRight().getPipeType()==pType) return "R";
 		else if(current.getLeft()!=null&&current.getLeft()!=last&&current.getLeft().getPipeType()==pType) return "L";
