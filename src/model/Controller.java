@@ -1,6 +1,25 @@
 package model;
 
+//import java.util.Scanner;
+
 public class Controller {
+
+	//public static Scanner scan = new Scanner(System.in);
+
+	/*
+	public static void main(String[] args) {
+		int r, cl, p =0;
+		Controller c = new Controller();
+		c.initialize("Camilin");
+		while (true){
+			System.out.println(c.printGrid());
+			r = scan.nextInt();
+			cl = scan.nextInt();
+			p = scan.nextInt();
+			c.play(r, cl, p);
+			System.out.println(c.simulate());
+		}
+	}*/ 
 
 	private Grid grid;
 
@@ -14,6 +33,7 @@ public class Controller {
 			pipeNum = grid.pipeCount();
 			//TODO - calculate the score 
 			result = simulation + "//" + score;
+			printGrid();
 			grid = null;
 		}
 		return result;

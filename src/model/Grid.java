@@ -144,7 +144,6 @@ public class Grid {
 			holder2 = holder2.getDown();
 			holder = holder2;
 		}
-		System.out.println(print);
 		return print;
 	}
 
