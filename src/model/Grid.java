@@ -8,6 +8,7 @@ public class Grid {
 	private int columns;
 	private int rows;
 	private Pipe start;
+	private String nickName;
 
 	/*
 	public static void main(String[] args) {
@@ -35,10 +36,15 @@ public class Grid {
 	 * @param columns
 	 * @param rows
 	 */
-	public Grid(int columns, int rows) {
+	public Grid(int columns, int rows, String nickName) {
 		this.columns = columns;
 		this.rows = rows;
-		head = create(1,1,0,new Pipe(6, "1,1"), null);
+		this.nickName = nickName;
+		int sRow = (int)((Math.random()*8)+1);
+		int sCol = (int)((Math.random()*8)+1);
+		int eRow = (int)((Math.random()*8)+1);
+		int eCol = (int)((Math.random()*8)+1);
+		head = create(1,1,0,new Pipe(6, "1,1"), null, sRow, sCol, eRow, eCol);
 	}
 
 
@@ -52,16 +58,22 @@ public class Grid {
 	 * @param last	Must be null when first called
 	 * @return The head of the list
 	 */
-	public Pipe create(int r, int c, int lastC, Pipe current, Pipe last) {
+	public Pipe create(int r, int c, int lastC, Pipe current, Pipe last, int sRow, int sCol, int eRow, int eCol) {
+
+		if (sRow==r&&sCol==c){
+			start = current;
+			current.setPipeType(1);
+		}
+		else if (eRow==r&&eCol==c) current.setPipeType(2);
 		
 		if (c>lastC){//This means the pipes are getting created to the right
 			current.setLeft(last);//sets its left to the last one
-			if (r!=1){//Unless it is located in thefirst row there is the need to set its upper pipe
+			if (r!=1){//Unless it is located in the first row there is the need to set its upper pipe
 				current.setUp(current.getLeft().getUp().getRight());//travels trough adjacent pipes to get to the pipe that would be up
 				current.getUp().setDown(current);
 			}
-			if (c!=columns) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//If it isn't in the end it continues moving right
-			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));//If its in the end it moves down
+			if (c!=columns) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));//If it isn't in the end it continues moving right
+			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current, sRow, sCol, eRow, eCol));//If its in the end it moves down
 		}
 
 		else if (c<lastC){//This means the pipes are getting created to the left
@@ -70,14 +82,14 @@ public class Grid {
 			current.setUp(current.getRight().getUp().getLeft());
 			current.getUp().setDown(current);
 			}
-			if (c!=1) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current));
-			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current));
+			if (c!=1) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
+			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current, sRow, sCol, eRow, eCol));
 		}
 
 		else if (c==lastC){//This means its last pipe its abvove it
 			current.setUp(last);
-			if (c==1) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current));//depending on its position it sets the creation flow to the right or to the left
-			else current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current));
+			if (c==1) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));//depending on its position it sets the creation flow to the right or to the left
+			else current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
 		}
 
 		//Theoretically unreachable condition, used to signal that something went extremelly wrong
@@ -102,11 +114,11 @@ public class Grid {
 		for (int r=1; r<row; r++){//to move to the row
 			if(holder!=null) holder = holder.getDown();
 		}
-		for (int c=1; c<column; c++){//to move to teh column
+		for (int c=1; c<column; c++){//to move to the column
 			if(holder!=null) holder = holder.getRight();
 		}
 		if (holder!=null){//to check for its existence
-			if (pipeType==1) start = holder;//If it is being changed to the start, saves it as the start
+			//if (pipeType==1) start = holder;//If it is being changed to the start, saves it as the start
 			holder.setPipeType(pipeType);//changes the type
 			return true;
 		}
@@ -138,14 +150,16 @@ public class Grid {
 
 
 
-
+	public String simulate(){
+		return simulate(start, start);
+	}
 	/**
 	 * Checks if the conections made by the player are compatible withs each other, used to determine victory
 	 * @param current Must be the starting position (pipeType 1(PipeType.Start))
 	 * @param last
 	 * @return A boolean informing the program of the compatibility of the pipes put together by the player
 	 */
-	public boolean simulate(Pipe current, Pipe last){
+	public String simulate(Pipe current, Pipe last){
 		if (current.getPipeType()==PipeType.START||current.getPipeType()==PipeType.INTERSECTION){
 			switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
 				case "R":
@@ -175,9 +189,9 @@ public class Grid {
 			}
 			switch (checkExistenceOf(PipeType.END, last, current)){
 				case "R":
-					return true;
+					return nickName;
 				case "L":
-					return true;
+					return nickName;
 			}
 		}
 		else if (current.getPipeType()==PipeType.VERTICAL){
@@ -195,12 +209,12 @@ public class Grid {
 			}
 			switch (checkExistenceOf(PipeType.END, last, current)){
 				case "D":
-					return true;
+					return nickName;
 				case "U":
-					return true;
+					return nickName;
 			}
 		}
-		return false;
+		return null;
 
 	}
 
@@ -219,6 +233,28 @@ public class Grid {
 		else if(current.getUp()!=null&&current.getUp()!=last&&current.getUp().getPipeType()==pType) return "U";
 		else return "no";
 
+	}
+
+	public int pipeCount(){
+		return pipeCount(1, 1, 0, head, head, 0);
+	}
+
+	public int pipeCount(int r, int c, int lastC, Pipe current, Pipe last, int sumVal){
+		if(current.getPipeType()!=PipeType.END||current.getPipeType()!=PipeType.START||current.getPipeType()!=PipeType.NULL) sumVal++;
+		else if (c>lastC){//This means the pipes are getting created to the right last one
+			if (c!=columns) return pipeCount(r, c+1, c, current.getRight(), current, sumVal);
+			else if(r!=rows) return pipeCount(r+1, c, lastC, current, last, sumVal);
+		}
+		else if (c<lastC){//This means the pipes are getting created to the left
+			if (c!=columns) return pipeCount(r, c-1, c, current.getRight(), current, sumVal);
+			else if(r!=rows) return pipeCount(r+1, c, lastC, current, last, sumVal);
+		}
+
+		else if (c==lastC){//This means its last pipe its abvove it
+			if (c!=columns) return pipeCount(r, c+1, c, current.getRight(), current, sumVal);
+			else if(r!=rows) return pipeCount(r, c-1, lastC, current, last, sumVal);
+		}
+		return 0;
 	}
 
 }
