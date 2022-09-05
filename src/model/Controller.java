@@ -2,6 +2,8 @@ package model;
 
 public class Controller {
 
+	private Leaderboard leaderboard;
+
 	public boolean simulate() {
 		// TODO - implement Controller.simulate
 		throw new UnsupportedOperationException();
@@ -23,13 +25,11 @@ public class Controller {
 	}
 
 	public String printScores() {
-		// TODO - implement Controller.printScores
-		throw new UnsupportedOperationException();
+		return leaderboard.toString();
 	}
 
 	public Controller() {
-		// TODO - implement Controller.Controller
-		throw new UnsupportedOperationException();
+		leaderboard = new Leaderboard();
 	}
 
 }

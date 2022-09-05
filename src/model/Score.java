@@ -1,6 +1,7 @@
 package model;
 
 import java.time.Duration;
+import java.util.Timer;
 
 public class Score {
 
@@ -15,9 +16,10 @@ public class Score {
 	 * @param nickname
 	 * @param score
 	 */
-	public Score(String nickname, int score) {
+	public Score(String nickname, int score, Duration timer) {
 		this.nickname = nickname;
 		this.score = score;
+		this.timer = timer;
 	}
 
 	public String toString() {
@@ -55,6 +57,12 @@ public class Score {
 	public Score getLeft(){
 
 		return left;
+
+	}
+
+	public Duration getTimer(){
+
+		return timer;
 
 	}
 

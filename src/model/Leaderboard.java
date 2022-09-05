@@ -2,11 +2,15 @@ package model;
 
 import java.util.ArrayList;
 
+import java.time.*;;
+
 public class Leaderboard {
 
 	private Score root;
 
-    private int boardLength=37;
+    private int nickToScore=20;
+
+    private int scoreToTime=12;
 
 	public Leaderboard() {
 	}
@@ -15,12 +19,15 @@ public class Leaderboard {
 	 * 
 	 * @param score
 	 * @param nickname
+     * Compares the new score with each of the scores in the tree to see if it is higher or lower
+     * if the corresponding side is equal to null, it will be added there, otherwise the methos will be 
+     * called again but it will compare it to next node
 	 */
-	public String add(int score, String nickname, Score current) {
+	public String add(int score, String nickname, Duration timer, Score current) {
 
 		String out="";
 
-        Score newScore = new Score(nickname, score);
+        Score newScore = new Score(nickname, score, timer);
 
         if(current==null){
 
@@ -42,7 +49,7 @@ public class Leaderboard {
 
             }else{
 
-                add(score, nickname, current.getRight());
+                add(score, nickname, timer, current.getRight());
 
             }
 
@@ -56,7 +63,7 @@ public class Leaderboard {
 
             }else{
 
-                add(score, nickname, current.getLeft());
+                add(score, nickname, timer, current.getLeft());
 
             }
 
@@ -69,13 +76,15 @@ public class Leaderboard {
 	
 
 	/**
-	 * 
 	 * @param node
+     * @param topTen
+     * The method will go to the last node on the right, it will add it once it is at the last level of the
+     * tree, after that it will add to its parent node, and finally add the node located to its left
+     * until the ArrayList has 10 positions
 	 */
+
 	public ArrayList<Score> inOrder(Score node, ArrayList<Score> topTen) {
 		
-		ArrayList<Score> toAdd = new ArrayList<Score>();
-
 		if(node==null){
 
             node=root;
@@ -90,13 +99,9 @@ public class Leaderboard {
 
         if(node!=null&&topTen.size()<10){
 
-            toAdd.clear();
-
-            topTen.addAll(toAdd);
-
             if(node.getRight()!=null){
     
-                toAdd.addAll(inOrder(node.getRight(), topTen));
+                inOrder(node.getRight(), topTen);
     
             }
 
@@ -104,7 +109,7 @@ public class Leaderboard {
 
             if(node.getLeft()!=null){
     
-                toAdd.addAll(inOrder(node.getLeft(), topTen));
+                inOrder(node.getLeft(), topTen);
     
             }
 
@@ -122,7 +127,7 @@ public class Leaderboard {
 
 		int counter=0;
 
-        String out= "--|	-	 LeaderBoard	-	|--\n--|Nickname                      Puntaje|--\n-------------------------------------------\n";
+        String out= "--|	-	LeaderBoard	-	|--\n--|Nickname        Puntaje        Tiempo|--\n-------------------------------------------\n";
 
         String space =" ";
 
@@ -134,7 +139,7 @@ public class Leaderboard {
 
             actual = topTen.get(counter);
 
-            int numOfSpace = boardLength-(actual.getNickname().length()+(""+actual.getScore()).length());
+            int numOfSpace = nickToScore-(actual.getNickname().length()+(""+actual.getScore()).length());
 
             for(int i=0; i<numOfSpace; i++){
 
@@ -142,7 +147,17 @@ public class Leaderboard {
 
             }
 
-            out+="- ["+ actual.getNickname() + spaces + actual.getScore() +"] -\n";
+            out+="- ["+ actual.getNickname() + spaces + actual.getScore();
+
+            spaces="";
+
+            for(int i=0; i<scoreToTime; i++){
+
+                spaces+=space;
+
+            }
+
+            out+= spaces + actual.getTimer().getSeconds()+ "] -\n";
 
             spaces="";
 
