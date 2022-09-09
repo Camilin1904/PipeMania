@@ -10,6 +10,7 @@ public class Pipe {
 	private Pipe down;
 	private Pipe left;
 	private Pipe right;
+	private boolean hasPassed;
 
 	/**
 	 * 
@@ -40,6 +41,7 @@ public class Pipe {
 				System.out.println("Non existent pipe type found");
 				break;
 		}
+		hasPassed = false;
 	}
 
 	/**
@@ -129,4 +131,11 @@ public class Pipe {
 	public PipeType getPipeType() {
 		return pipeType;
 	}
+	public void setHasPassed(boolean hasPassed) {
+		this.hasPassed = hasPassed;
+	}
+	public boolean getHasPassed(){
+		return hasPassed;
+	}
+	
 }

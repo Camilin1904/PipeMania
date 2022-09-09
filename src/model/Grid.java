@@ -9,6 +9,7 @@ public class Grid {
 	private int rows;
 	private Pipe start;
 	private String nickName;
+	private int pipeCount;
 
 	/*
 	public static void main(String[] args) {
@@ -79,8 +80,8 @@ public class Grid {
 		else if (c<lastC){//This means the pipes are getting created to the left
 			current.setRight(last);
 			if (r!=1){
-			current.setUp(current.getRight().getUp().getLeft());
-			current.getUp().setDown(current);
+				current.setUp(current.getRight().getUp().getLeft());
+				current.getUp().setDown(current);
 			}
 			if (c!=1) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
 			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current, sRow, sCol, eRow, eCol));
@@ -112,17 +113,21 @@ public class Grid {
 	public boolean changePipeType(int row, int column, int pipeType) {
 		Pipe holder = head;
 		for (int r=1; r<row; r++){//to move to the row
-			if(holder!=null) holder = holder.getDown();
+			if(holder!=null) holder = holder.getRight();
 		}
 		for (int c=1; c<column; c++){//to move to the column
-			if(holder!=null) holder = holder.getRight();
+			if(holder!=null) holder = holder.getDown();
 		}
 		if (holder!=null){//to check for its existence
 			//if (pipeType==1) start = holder;//If it is being changed to the start, saves it as the start
-			holder.setPipeType(pipeType);//changes the type
-			return true;
+			if (holder.getPipeType()!=PipeType.END&&holder.getPipeType()!=PipeType.START){
+				if(holder.getPipeType()==PipeType.NULL) pipeCount++;
+				if(pipeType==6) pipeCount--;
+				holder.setPipeType(pipeType);//changes the type
+				return true;
+			}
 		}
-		else return false;//if the condition above was not met, then it means that the operation was unsuccesfull
+		return false;//if the condition above was not met, then it means that the operation was unsuccesfull
 	}
 
 
@@ -159,64 +164,123 @@ public class Grid {
 	 * @return A boolean informing the program of the compatibility of the pipes put together by the player
 	 */
 	public String simulate(Pipe current, Pipe last){
-		if (current.getPipeType()==PipeType.START||current.getPipeType()==PipeType.INTERSECTION){
+		String holder = null;
+		if (current.getPipeType()==PipeType.START){
 			switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
 				case "R":
-					return simulate(current.getRight(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getRight(), current);
+					break;
 				case "L":
-					return simulate(current.getLeft(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getLeft(), current);
+					break;
 			}
 			switch (checkExistenceOf(PipeType.VERTICAL, last, current)){
 				case "D":
-					return simulate(current.getDown(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getDown(), current);
+					break;
 				case "U":
-					return simulate(current.getUp(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getUp(), current);
+					break;
+			}
+		}
+		else if (current.getPipeType()==PipeType.INTERSECTION){
+			if (last.getPipeType()==PipeType.VERTICAL){
+				switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
+					case "R":
+						current.setHasPassed(true);
+						holder = simulate(current.getRight(), current);
+						break;
+					case "L":
+						current.setHasPassed(true);
+						holder = simulate(current.getLeft(), current);
+						break;
+				}
+			}
+			if (last.getPipeType()==PipeType.HORIZONTAL){
+				switch (checkExistenceOf(PipeType.VERTICAL, last, current)){
+					case "D":
+						current.setHasPassed(true);		
+						holder = simulate(current.getDown(), current);
+						break;
+					case "U":
+						current.setHasPassed(true);
+						holder = simulate(current.getUp(), current);
+						break;
+				}
 			}
 		}
 		else if (current.getPipeType()==PipeType.HORIZONTAL){
 			switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
 				case "R":
-					return simulate(current.getRight(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getRight(), current);
+					break;
 				case "L":
-					return simulate(current.getLeft(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getLeft(), current);
+					break;
 			}
 			switch (checkExistenceOf(PipeType.INTERSECTION, last, current)){
 				case "R":
-					return simulate(current.getRight(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getRight(), current);
+					break;
 				case "L":
-					return simulate(current.getLeft(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getLeft(), current);
+					break;
 			}
 			switch (checkExistenceOf(PipeType.END, last, current)){
 				case "R":
-					return nickName;
+					current.setHasPassed(true);
+					holder = nickName;
+					break;
 				case "L":
-					return nickName;
+					current.setHasPassed(true);
+					holder = nickName;
+					break;
 			}
 		}
 		else if (current.getPipeType()==PipeType.VERTICAL){
 			switch (checkExistenceOf(PipeType.VERTICAL, last, current)){
 				case "D":
-					return simulate(current.getDown(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getDown(), current);
+					break;
 				case "U":
-					return simulate(current.getUp(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getUp(), current);
+					break;
 			}
 			switch (checkExistenceOf(PipeType.INTERSECTION, last, current)){
 				case "D":
-					return simulate(current.getDown(), current);
+					current.setHasPassed(true);
+					holder = simulate(current.getDown(), current);
+					break;
 				case "U":
-					return simulate(current.getUp(), current);
+					current.setHasPassed(true);		
+					holder = simulate(current.getUp(), current);
+					break;
 			}
 			switch (checkExistenceOf(PipeType.END, last, current)){
 				case "D":
-					return nickName;
+					current.setHasPassed(true);
+					holder = nickName;
+					break;
 				case "U":
-					return nickName;
+					current.setHasPassed(true);
+					holder = nickName;
+					break;
 			}
 		}
-		return null;
+		current.setHasPassed(false);
+		return holder;
 
 	}
-
 
 	/**
 	 * Used to find where a certain pipe type is in relation to a pipe
@@ -226,18 +290,21 @@ public class Grid {
 	 * @return where it is or if it isn't
 	 */
 	public String checkExistenceOf(PipeType pType, Pipe last, Pipe current){
-		if(current.getRight()!=null&&current.getRight()!=last&&current.getRight().getPipeType()==pType) return "R";
-		else if(current.getLeft()!=null&&current.getLeft()!=last&&current.getLeft().getPipeType()==pType) return "L";
-		else if(current.getDown()!=null&&current.getDown()!=last&&current.getDown().getPipeType()==pType) return "D";
-		else if(current.getUp()!=null&&current.getUp()!=last&&current.getUp().getPipeType()==pType) return "U";
-		else return "no";
+		if (!current.getHasPassed()){
+			if(current.getRight()!=null&&current.getRight()!=last&&current.getRight().getPipeType()==pType) return "R";
+			else if(current.getLeft()!=null&&current.getLeft()!=last&&current.getLeft().getPipeType()==pType) return "L";
+			else if(current.getDown()!=null&&current.getDown()!=last&&current.getDown().getPipeType()==pType) return "D";
+			else if(current.getUp()!=null&&current.getUp()!=last&&current.getUp().getPipeType()==pType) return "U";
+		}
+		return "no";
 
 	}
 
-	public int pipeCount(){
-		return pipeCount(1, 1, 0, head, head, 0);
+	public int getPipeCount(){
+		return pipeCount;
 	}
 
+	/*
 	public int pipeCount(int r, int c, int lastC, Pipe current, Pipe last, int sumVal){
 		if(current.getPipeType()!=PipeType.END||current.getPipeType()!=PipeType.START||current.getPipeType()!=PipeType.NULL) sumVal++;
 		else if (c>lastC){//This means the pipes are getting created to the right last one
@@ -255,5 +322,6 @@ public class Grid {
 		}
 		return 0;
 	}
+	*/
 
 }
