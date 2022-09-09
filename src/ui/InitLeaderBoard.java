@@ -33,11 +33,11 @@ public class InitLeaderBoard {
 
     public void init(){
 
-        leaderboard.add(100, "kzapvtas", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), null);
-        leaderboard.add(200, "tumama", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), null);
-        leaderboard.add(1000, "camilin", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), null);
-        leaderboard.add(50, "pablo", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), null);
-        leaderboard.add(400, "sus", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), null);
+        leaderboard.add("kzapvtas", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), 100, null);
+        leaderboard.add("tumama", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), 200, null);
+        leaderboard.add("camilin", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), 1000, null);
+        leaderboard.add("pablo", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), 50, null);
+        leaderboard.add("sus", Duration.between(Instant.parse("2022-08-27T22:00:00Z"), startTime.instant()), 400, null);
 
         System.out.println(leaderboard.toString());
 

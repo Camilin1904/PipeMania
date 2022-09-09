@@ -23,7 +23,7 @@ public class Leaderboard {
      * if the corresponding side is equal to null, it will be added there, otherwise the methos will be 
      * called again but it will compare it to next node
 	 */
-	public String add(int score, String nickname, Duration timer, Score current) {
+	public String add(String nickname, Duration timer, int score, Score current) {
 
 		String out="";
 
@@ -49,7 +49,7 @@ public class Leaderboard {
 
             }else{
 
-                add(score, nickname, timer, current.getRight());
+                add(nickname, timer, score, current.getRight());
 
             }
 
@@ -63,7 +63,7 @@ public class Leaderboard {
 
             }else{
 
-                add(score, nickname, timer, current.getLeft());
+                add(nickname, timer, score, current.getLeft());
 
             }
 
@@ -85,6 +85,12 @@ public class Leaderboard {
 
 	public ArrayList<Score> inOrder(Score node, ArrayList<Score> topTen) {
 		
+        if(root==null){
+
+            return null;
+
+        }
+
 		if(node==null){
 
             node=root;
@@ -122,7 +128,7 @@ public class Leaderboard {
 
 
 	public String toString() {
-		
+
 		ArrayList<Score> topTen = inOrder(null, null);
 
 		int counter=0;
@@ -135,7 +141,9 @@ public class Leaderboard {
 
         Score actual;
 
-        do{
+        if(topTen!=null){
+
+             do{
 
             actual = topTen.get(counter);
 
@@ -164,6 +172,8 @@ public class Leaderboard {
             counter++;
 
         }while(counter<topTen.size());
+
+        }
 
         return out;
 
