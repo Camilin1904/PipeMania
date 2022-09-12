@@ -34,11 +34,9 @@ public class Controller {
 
 	public String simulate() {
 		String simulation = grid.simulate();
-		int pipeNum = 0;
 		String result = null;
 
 		if (simulation!=null){
-			pipeNum = grid.getPipeCount();
 			end = clock.instant();
 
 			//TODO - calculate the score 
@@ -60,7 +58,7 @@ public class Controller {
 		return grid.changePipeType(row, column, pipeType);
 	}
 
-	private int calculateScore() {
+	public int calculateScore() {
 		return grid.getPipeCount()*100-(60-Duration(start, end))*10;
 	}
 

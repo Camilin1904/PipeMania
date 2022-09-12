@@ -55,7 +55,7 @@ public class PipeMania {
 			
 			System.out.println(controller.printGrid());
 			
-			innerMenu();
+			innerMenu(nickname);
 
 			break;
 		case 2:
@@ -71,7 +71,7 @@ public class PipeMania {
 		}
 	}
 
-	public void innerMenu(){
+	public void innerMenu(String nickname){
 
 		int option;
 
@@ -83,12 +83,12 @@ public class PipeMania {
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
-            innerExecuteOperation(option);
+            innerExecuteOperation(option, nickname);
         }while(option!=3);
 
 	}
 
-	public void innerExecuteOperation(int operation) {
+	public void innerExecuteOperation(int operation, String nickname) {
 		
 		
 		
@@ -97,7 +97,10 @@ public class PipeMania {
             
 			break;
 		case 2:
-            
+
+            if(controller.simulate()!=null){
+				System.out.println(controller.simulate()+"\n\n\n"+controller.finalScore(controller.addToLeaderBoard(nickname, controller.calculateScore())));
+			}
 			break;
         case 3:
             System.out.println("Regresando al menu");
