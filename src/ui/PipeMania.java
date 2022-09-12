@@ -10,21 +10,21 @@ public class PipeMania {
 
 	private Scanner sc = new Scanner(System.in);
 
-	private clock = Clock.systemDefaultZone();
+	private Clock clock = Clock.systemDefaultZone();
 
 	public PipeMania(){}
 
 	public static void main(String[] args) {
 
-		PipeMania main = new PipeMania
+		PipeMania main = new PipeMania();
 		
-		System.out.println("Inicializando....")
+		System.out.println("Inicializando....");
 
 		main.menu();
 
 	}
 
-	public String menu() {
+	public void menu() {
 
 		int option;
 
@@ -56,8 +56,6 @@ public class PipeMania {
 			
 			System.out.println(controller.printGrid());
 			
-			controller.innerExecuteOperation();
-			
 			start = clock.instant();
 
 			break;
@@ -70,7 +68,6 @@ public class PipeMania {
 		default:
 			System.out.println("Error, opción no válida");
 			break;
-			return start;
 
 		}
 	}
@@ -101,7 +98,7 @@ public class PipeMania {
             
 			break;
 		case 2:
-            if(simulate){
+            if(controller.simulate()!=null){
 
 				end=clock.instant();
 
@@ -130,13 +127,6 @@ public class PipeMania {
 	public void viewScore() {
 		// TODO - implement PipeMania.viewScore
 		throw new UnsupportedOperationException();
-	}
-
-	public boolean simulate(String nickName) {
-		
-
-
-
 	}
 
 }

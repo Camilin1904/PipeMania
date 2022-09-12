@@ -1,6 +1,6 @@
 package model;
 
-import java.util.time.*;
+import java.time.*;
 
 //import java.util.Scanner;
 
@@ -20,7 +20,8 @@ public class Controller {
 			c.play(r, cl, p);
 			System.out.println(c.simulate());
 		}
-	}*/ 
+	}
+*/
 
 	private Grid grid;
 
@@ -31,7 +32,8 @@ public class Controller {
 		String result = null;
 
 		if (simulation!=null){
-			pipeNum = grid.pipeCount();
+			pipeNum = grid.getPipeCount();
+			System.out.println(pipeNum);
 			//TODO - calculate the score 
 			result = simulation + "//" + score;
 			printGrid();
@@ -57,12 +59,12 @@ public class Controller {
 	public String printGrid() {
 		return grid.toString();
 	}
-
+	/*
 	public String addToLeaderBoard(String nickName, Instant start, Instant finish, int score){
 
 		leaderboard.add(nickName, Duration(start,finish), score, null);
 
-	}
+	}*/
 
 	public String printScores() {
 		return leaderboard.toString();
