@@ -124,5 +124,4 @@ public class PipeMania {
 		throw new UnsupportedOperationException();
 	}
 
-
 }
