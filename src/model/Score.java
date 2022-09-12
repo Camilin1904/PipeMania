@@ -1,7 +1,6 @@
 package model;
 
 import java.time.Duration;
-import java.util.Timer;
 
 public class Score {
 

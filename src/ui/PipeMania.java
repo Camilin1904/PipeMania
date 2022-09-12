@@ -2,7 +2,7 @@ package ui;
 
 import model.Controller;
 import java.util.Scanner;
-import java.time.*;
+
 
 public class PipeMania {
 
@@ -10,21 +10,21 @@ public class PipeMania {
 
 	private Scanner sc = new Scanner(System.in);
 
-	private clock = Clock.systemDefaultZone();
+	
 
 	public PipeMania(){}
 
 	public static void main(String[] args) {
 
-		PipeMania main = new PipeMania
+		PipeMania main = new PipeMania();
 		
-		System.out.println("Inicializando....")
+		System.out.println("Inicializando....");
 
 		main.menu();
 
 	}
 
-	public String menu() {
+	public void menu() {
 
 		int option;
 
@@ -42,8 +42,7 @@ public class PipeMania {
 
 	public void executeOperation(int operation) {
 		
-		Instant start=null;
-		Instant end = null;
+		
 		
 		switch(operation) {
 		case 1:
@@ -56,9 +55,7 @@ public class PipeMania {
 			
 			System.out.println(controller.printGrid());
 			
-			controller.innerExecuteOperation();
-			
-			start = clock.instant();
+			innerMenu();
 
 			break;
 		case 2:
@@ -70,7 +67,6 @@ public class PipeMania {
 		default:
 			System.out.println("Error, opción no válida");
 			break;
-			return start;
 
 		}
 	}
@@ -87,25 +83,21 @@ public class PipeMania {
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
-            executeOperation(option);
+            innerExecuteOperation(option);
         }while(option!=3);
 
 	}
 
-	public Instant innerExecuteOperation(int operation) {
+	public void innerExecuteOperation(int operation) {
 		
-		Instant end=null;
+		
 		
 		switch(operation) {
 		case 1:
             
 			break;
 		case 2:
-            if(simulate){
-
-				end=clock.instant();
-
-			}
+            
 			break;
         case 3:
             System.out.println("Regresando al menu");
@@ -115,7 +107,7 @@ public class PipeMania {
 		
 		}
 
-		return end;
+		
 
 	}
 
@@ -132,11 +124,5 @@ public class PipeMania {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean simulate(String nickName) {
-		
-
-
-
-	}
 
 }

@@ -8,9 +8,9 @@ public class Leaderboard {
 
 	private Score root;
 
-    private int nickToScore=20;
+    public static final int nickToScore=20;
 
-    private int scoreToTime=12;
+    public static final int scoreToTime=12;
 
 	public Leaderboard() {
 	}
