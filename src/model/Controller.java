@@ -1,12 +1,13 @@
 package model;
 
-import java.util.Scanner;
+import java.time.*;
+
+//import java.util.Scanner;
 
 public class Controller {
 
-	public static Scanner scan = new Scanner(System.in);
-
-	
+	private Leaderboard leaderboard;
+	/*
 	public static void main(String[] args) {
 		int r, cl, p =0;
 		Controller c = new Controller();
@@ -20,6 +21,7 @@ public class Controller {
 			System.out.println(c.simulate());
 		}
 	}
+*/
 
 	private Grid grid;
 
@@ -57,9 +59,18 @@ public class Controller {
 	public String printGrid() {
 		return grid.toString();
 	}
+	/*
+	public String addToLeaderBoard(String nickName, Instant start, Instant finish, int score){
+
+		leaderboard.add(nickName, Duration(start,finish), score, null);
+
+	}*/
 
 	public String printScores() {
-		// TODO - implement Controller.printScores
-		throw new UnsupportedOperationException();
+		return leaderboard.toString();
+	}
+
+	public Controller() {
+		leaderboard = new Leaderboard();
 	}
 }
