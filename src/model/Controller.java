@@ -4,8 +4,6 @@ import java.time.*;
 
 import java.time.Duration;
 
-//import java.util.Scanner;
-
 public class Controller {
 
 	private Instant start=null;
@@ -16,32 +14,19 @@ public class Controller {
 	
 
 	private Leaderboard leaderboard;
-	/*
-	public static void main(String[] args) {
-		int r, cl, p =0;
-		Controller c = new Controller();
-		c.initialize("Camilin");
-		while (true){
-			System.out.println(c.printGrid());
-			r = scan.nextInt();
-			cl = scan.nextInt();
-			p = scan.nextInt();
-			c.play(r, cl, p);
-			System.out.println(c.simulate());
-		}
-	}*/ 
 
 	private Grid grid;
 
 	public String simulate() {
-		String simulation = grid.simulate();
-		String result = null;
+		String simulation = grid.simulate(), result = null;
+		int pipeCount, score;
 
 		if (simulation!=null){
 			end = clock.instant();
-
-			//TODO - calculate the score 
+			pipeCount = grid.getPipeCount();
 			result = simulation;
+			score = calculateScore(pipeCount);
+			result = finalScore(addToLeaderBoard(result, score)); 
 			printGrid();
 			grid = null;
 		}
@@ -50,17 +35,17 @@ public class Controller {
 	}
 
 	public void initialize(String nickName) {
-		grid = new Grid(8, 8, nickName);
-		// TODO - take time instant to calculate the score
 		start = clock.instant();
+		grid = new Grid(8, 8, nickName);
+		
 	}
 
 	public boolean play(int row, int column, int pipeType){
 		return grid.changePipeType(row, column, pipeType);
 	}
 
-	public int calculateScore() {
-		return grid.getPipeCount()*100-(60-(int)Duration.between(start, end).getSeconds())*10;
+	public int calculateScore(int pipeCount) {
+		return pipeCount*100-(60-(int)Duration.between(start, end).getSeconds())*10;
 	}
 
 	public String printGrid() {
@@ -70,12 +55,10 @@ public class Controller {
 	public Score addToLeaderBoard(String nickName, int score){
 
 		leaderboard.add(nickName,Duration.between(start, end), score, null);
-
+		Score s = new Score(nickName, score, Duration.between(start,end));
 		start = null;
-
 		end = null;
-
-		return new Score(nickName, score, Duration.between(start,end));
+		return s;
 
 	}
 

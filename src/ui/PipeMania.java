@@ -74,6 +74,7 @@ public class PipeMania {
 	public void innerMenu(String nickname){
 
 		int option;
+		boolean m = true;
 
 		do{System.out.println(
 				"Seleccione una opcion\n" +
@@ -83,16 +84,16 @@ public class PipeMania {
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
-            innerExecuteOperation(option, nickname);
-        }while(option!=3);
+            m=innerExecuteOperation(option, nickname);
+        }while(m);
 
 	}
 
 		
-	public void innerExecuteOperation(int operation, String nickname) {		
+	public boolean innerExecuteOperation(int operation, String nickname) {		
 		String holder = null, coordinates = "";
 		int row=0, col=0, pipeType=0;
-		boolean n = true;
+		boolean n = true, m = true;
 		switch(operation) {
 			case 1:
 				System.out.println("\n" + controller.printGrid());
@@ -128,33 +129,23 @@ public class PipeMania {
 
 				break;
 			case 2:
+				holder = controller.simulate();
 
-				if(controller.simulate()!=null){
-					System.out.println(controller.simulate()+"\n\n\n"+controller.finalScore(controller.addToLeaderBoard(nickname, controller.calculateScore())));
+				if(holder!=null){
+					System.out.println("\n\n\n"+holder);
+					m = false;
 				}
 				else System.out.println("Solucion incompleta");
 				break;
 			case 3:
 				System.out.println("Regresando al menu");
+				m = false;
 				break;
 			default:
 				System.out.println("Error, opción no válida");
 			
 		}
-
-	}
-
-	public void game() {
-		
-		String nickName;
-
-		nickName = sc.next();
-
-	}
-
-	public void viewScore() {
-		// TODO - implement PipeMania.viewScore
-		throw new UnsupportedOperationException();
+		return m;
 	}
 
 }

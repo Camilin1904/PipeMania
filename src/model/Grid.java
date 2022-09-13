@@ -10,26 +10,6 @@ public class Grid {
 	private Pipe start;
 	private String nickName;
 	private int pipeCount;
-
-	/*
-	public static void main(String[] args) {
-		Grid grid = new Grid(8,8);
-		grid.changePipeType(1, 1, 1);
-		grid.changePipeType(1, 2, 3);
-		grid.changePipeType(1, 3, 5);
-		grid.changePipeType(2, 3, 4);
-		grid.changePipeType(3, 3, 5);
-		grid.changePipeType(3, 4, 3);
-		grid.changePipeType(3, 5, 3);
-		grid.changePipeType(3, 6, 5);
-		grid.changePipeType(2, 6, 4);
-		grid.changePipeType(1, 6, 5);
-		grid.changePipeType(1, 5, 3);
-		grid.changePipeType(1, 4, 2);
-		grid.toString();
-		System.out.println(grid.simulate(grid.start, grid.start));
-	}
-	*/
 	
 
 	/**
@@ -138,7 +118,7 @@ public class Grid {
 	 */
 	@Override
 	public String toString() {
-		String print = "  1 2 3 4 5 6 7 8 \n";
+		String print = "   1    2    3    4    5    6    7    8 \n";
 		Pipe holder = head, holder2 = head;
 		for (int row=1; row<=rows; row++){
 			print += row;
@@ -304,25 +284,5 @@ public class Grid {
 	public int getPipeCount(){
 		return pipeCount;
 	}
-
-	/*
-	public int pipeCount(int r, int c, int lastC, Pipe current, Pipe last, int sumVal){
-		if(current.getPipeType()!=PipeType.END||current.getPipeType()!=PipeType.START||current.getPipeType()!=PipeType.NULL) sumVal++;
-		else if (c>lastC){//This means the pipes are getting created to the right last one
-			if (c!=columns) return pipeCount(r, c+1, c, current.getRight(), current, sumVal);
-			else if(r!=rows) return pipeCount(r+1, c, lastC, current, last, sumVal);
-		}
-		else if (c<lastC){//This means the pipes are getting created to the left
-			if (c!=columns) return pipeCount(r, c-1, c, current.getRight(), current, sumVal);
-			else if(r!=rows) return pipeCount(r+1, c, lastC, current, last, sumVal);
-		}
-
-		else if (c==lastC){//This means its last pipe its abvove it
-			if (c!=columns) return pipeCount(r, c+1, c, current.getRight(), current, sumVal);
-			else if(r!=rows) return pipeCount(r, c-1, lastC, current, last, sumVal);
-		}
-		return 0;
-	}
-	*/
 
 }
