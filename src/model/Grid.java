@@ -138,7 +138,7 @@ public class Grid {
 	 */
 	@Override
 	public String toString() {
-		String print = "  1 2 3 4 5 6 7 8 ";
+		String print = "  1 2 3 4 5 6 7 8 \n";
 		Pipe holder = head, holder2 = head;
 		for (int row=1; row<=rows; row++){
 			print += row;
