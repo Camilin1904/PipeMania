@@ -2,7 +2,7 @@ package ui;
 
 import model.Controller;
 import java.util.Scanner;
-import java.time.*;
+
 
 public class PipeMania {
 
@@ -10,7 +10,7 @@ public class PipeMania {
 
 	private Scanner sc = new Scanner(System.in);
 
-	private Clock clock = Clock.systemDefaultZone();
+	
 
 	public PipeMania(){}
 
@@ -42,6 +42,8 @@ public class PipeMania {
 
 	public void executeOperation(int operation) {
 		
+		
+		
 		switch(operation) {
 		case 1:
 
@@ -52,6 +54,8 @@ public class PipeMania {
 			controller.initialize(nickname);
 			
 			System.out.println(controller.printGrid());
+			
+			innerMenu(nickname);
 
 			break;
 		case 2:
@@ -67,7 +71,7 @@ public class PipeMania {
 		}
 	}
 
-	public void innerMenu(){
+	public void innerMenu(String nickname){
 
 		int option;
 
@@ -79,61 +83,63 @@ public class PipeMania {
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
-            executeOperation(option);
+            innerExecuteOperation(option, nickname);
         }while(option!=3);
 
 	}
 
-	public void innerExecuteOperation(int operation) {
+		
+	public void innerExecuteOperation(int operation, String nickname) {		
 		String holder = null, coordinates = "";
 		int row=0, col=0, pipeType=0;
 		boolean n = true;
 		switch(operation) {
-		case 1:
-            System.out.println("\n" + controller.printGrid());
-			while (n){
-				System.out.println("¿En que posicion desea ponerla? (ingrese las coordenadas con el formato 'x,y')");
-				coordinates = sc.next();
-				try{
-					row = Integer.parseInt(coordinates.charAt(0) + "");
-					col = Integer.parseInt(coordinates.charAt(2) + "");
-					n = false;
+			case 1:
+				System.out.println("\n" + controller.printGrid());
+				while (n){
+					System.out.println("¿En que posicion desea ponerla? (ingrese las coordenadas con el formato 'x,y')");
+					coordinates = sc.next();
+					try{
+						row = Integer.parseInt(coordinates.charAt(0) + "");
+						col = Integer.parseInt(coordinates.charAt(2) + "");
+						n = false;
+					}
+					catch (NumberFormatException e){
+						System.out.println("Coordenadas invalidas, intente de nuevo.");
+					}
 				}
-				catch (NumberFormatException e){
-					System.out.println("Coordenadas invalidas, intente de nuevo.");
+
+				n = true;
+
+				while(n){
+					System.out.println("¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O");
+					try{
+						pipeType = sc.nextInt();
+						pipeType+=2;
+						if(pipeType<3||pipeType>5) System.out.println("Tipo de tuberia invalido, intente de nuevo.");
+						else n = false;
+					}
+					catch (NumberFormatException e){
+						System.out.println("Tipo de tuberia invalido, Intehte de nuevo.");
+					}
 				}
-			}
 
-			n = true;
+				if(!controller.play(row, col, pipeType)) System.out.println("Instrucciomn invalida");
 
-			while(n){
-				System.out.println("¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O");
-				try{
-					pipeType = sc.nextInt();
-					pipeType+=2;
-					if(pipeType<3||pipeType>5) System.out.println("Tipo de tuberia invalido, intente de nuevo.");
-					else n = false;
+				break;
+			case 2:
+
+				if(controller.simulate()!=null){
+					System.out.println(controller.simulate()+"\n\n\n"+controller.finalScore(controller.addToLeaderBoard(nickname, controller.calculateScore())));
 				}
-				catch (NumberFormatException e){
-					System.out.println("Tipo de tuberia invalido, Intehte de nuevo.");
-				}
-			}
-
-			if(!controller.play(row, col, pipeType)) System.out.println("Instrucciomn invalida");
-
-			break;
-		case 2:
-			holder = controller.simulate();
-            if(holder!=null){
-				System.out.println("Has ganado, tu puntage es de: \n" + holder);
-			}
-			break;
-        case 3:
-            System.out.println("Regresando al menu");
-            break;
-		default:
-			System.out.println("Error, opción no válida");
-		
+				else System.out.println("Solucion incompleta");
+				break;
+			case 3:
+				System.out.println("Regresando al menu");
+				break;
+			default:
+				System.out.println("Error, opción no válida");
+			
 		}
 
 	}

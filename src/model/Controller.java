@@ -2,9 +2,18 @@ package model;
 
 import java.time.*;
 
+import java.time.Duration;
+
 //import java.util.Scanner;
 
 public class Controller {
+
+	private Instant start=null;
+
+	private Instant end=null;
+
+	private Clock clock = Clock.systemDefaultZone();
+	
 
 	private Leaderboard leaderboard;
 	/*
@@ -20,51 +29,55 @@ public class Controller {
 			c.play(r, cl, p);
 			System.out.println(c.simulate());
 		}
-	}
-*/
+	}*/ 
 
 	private Grid grid;
 
 	public String simulate() {
 		String simulation = grid.simulate();
-		int pipeNum = 0;
-		int score = 0;
 		String result = null;
 
 		if (simulation!=null){
-			pipeNum = grid.getPipeCount();
-			System.out.println(pipeNum);
+			end = clock.instant();
+
 			//TODO - calculate the score 
-			result = simulation + "//" + score;
+			result = simulation;
 			printGrid();
 			grid = null;
 		}
+		
 		return result;
 	}
 
 	public void initialize(String nickName) {
 		grid = new Grid(8, 8, nickName);
 		// TODO - take time instant to calculate the score
+		start = clock.instant();
 	}
 
 	public boolean play(int row, int column, int pipeType){
 		return grid.changePipeType(row, column, pipeType);
 	}
 
-	private int calculateScore() {
-		// TODO - implement Controller.calculateScore
-		throw new UnsupportedOperationException();
+	public int calculateScore() {
+		return grid.getPipeCount()*100-(60-(int)Duration.between(start, end).getSeconds())*10;
 	}
 
 	public String printGrid() {
 		return grid.toString();
 	}
-	/*
-	public String addToLeaderBoard(String nickName, Instant start, Instant finish, int score){
 
-		leaderboard.add(nickName, Duration(start,finish), score, null);
+	public Score addToLeaderBoard(String nickName, int score){
 
-	}*/
+		leaderboard.add(nickName,Duration.between(start, end), score, null);
+
+		start = null;
+
+		end = null;
+
+		return new Score(nickName, score, Duration.between(start,end));
+
+	}
 
 	public String printScores() {
 		return leaderboard.toString();
@@ -72,5 +85,39 @@ public class Controller {
 
 	public Controller() {
 		leaderboard = new Leaderboard();
+	}
+
+	public String finalScore(Score actual){
+
+        String out= "--|	-	FinalScore	-	|--\n--|Nickname        Puntaje        Tiempo|--\n-------------------------------------------\n";
+
+        String space =" ";
+
+        String spaces = "";
+
+        int numOfSpace = Leaderboard.nickToScore-(actual.getNickname().length()+(""+actual.getScore()).length());
+
+        for(int i=0; i<numOfSpace; i++){
+
+            spaces+=space;
+
+        }
+
+        out+="- ["+ actual.getNickname() + spaces + actual.getScore();
+
+        spaces="";
+
+        for(int i=0; i<Leaderboard.scoreToTime; i++){
+
+            spaces+=space;
+
+        }
+
+        out+= spaces + actual.getTimer().getSeconds()+ "] -\n";
+
+        spaces="";
+
+		return out;
+
 	}
 }
