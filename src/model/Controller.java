@@ -80,7 +80,7 @@ public class Controller {
 
         String spaces = "";
 
-        int numOfSpace = Leaderboard.nickToScore-(actual.getNickname().length()+(""+actual.getScore()).length());
+        int numOfSpace = Leaderboard.nickToScore-actual.getNickname().length();
 
         for(int i=0; i<numOfSpace; i++){
 
@@ -90,27 +90,27 @@ public class Controller {
 
         out+="- ["+ actual.getNickname() + spaces + actual.getScore();
 
-        spaces="";
+            spaces="";
 
-		long time = actual.getTimer().getSeconds();
+            long time = actual.getTimer().getSeconds();
 
-		int hours = (int)TimeUnit.SECONDS.toHours(time);
+		    int hours = (int)TimeUnit.SECONDS.toHours(time);
 
-		int minutes = (int)(TimeUnit.SECONDS.toMinutes(time)-TimeUnit.SECONDS.toHours(time)*60);
+		    int minutes = (int)(TimeUnit.SECONDS.toMinutes(time)-TimeUnit.SECONDS.toHours(time)*60);
 
-		double seconds = (double)(time - TimeUnit.SECONDS.toMinutes(time)*60);
+		    double seconds = (double)(time - TimeUnit.SECONDS.toMinutes(time)*60);
 
-        String timeFormat = hours + ":" + minutes + ":" + String.format("%.2f", seconds) + "] -\n";
+            String timeFormat =hours + ":" + minutes + ":" + String.format("%.2f", seconds);
 
-        for(int i=0; i<Leaderboard.scoreToTime-timeFormat.length(); i++){
+            for(int i=0; i<Leaderboard.scoreToTime-(""+actual.getScore()).length()-timeFormat.length(); i++){
 
-            spaces+=space;
+                spaces+=space;
 
-        }
+            }
 
-		out += spaces + timeFormat;
+            out+=spaces + timeFormat+ "] -\n";
 
-        spaces="";
+            spaces="";
 
 		return out;
 
