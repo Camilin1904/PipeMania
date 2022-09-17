@@ -18,7 +18,7 @@ public class PipeMania {
 
 		PipeMania main = new PipeMania();
 		
-		System.out.println("Inicializando....");
+		System.out.println("\n\n\nInicializando....");
 
 		main.menu();
 
@@ -29,10 +29,10 @@ public class PipeMania {
 		int option;
 
 		do{System.out.println(
-				"Seleccione una opcion\n" +
+				"\n\n\nSeleccione una opcion\n" +
 				"(1) Nueva partida\n" +
 				"(2) Ver puntaje\n" +
-                "(3) Para Salir"
+                "(3) Para Salir\n"
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
@@ -47,13 +47,13 @@ public class PipeMania {
 		switch(operation) {
 		case 1:
 
-			System.out.println("Ingrese su nickname");
+			System.out.println("\nIngrese su nickname\n");
 
 			String nickname = sc.next();
             
 			controller.initialize(nickname);
 			
-			System.out.println(controller.printGrid());
+			System.out.println("\n\n\n"+controller.printGrid());
 			
 			innerMenu(nickname);
 
@@ -62,10 +62,10 @@ public class PipeMania {
             System.out.println(controller.printScores());
 			break;
         case 3:
-            System.out.println("Bye!:D");
+            System.out.println("\nBye!:D");
             break;
 		default:
-			System.out.println("Error, opción no válida");
+			System.out.println("\nError, opción no válida\n");
 			break;
 
 		}
@@ -77,10 +77,10 @@ public class PipeMania {
 		boolean m = true;
 
 		do{System.out.println(
-				"Seleccione una opcion\n" +
+				"\n\nSeleccione una opcion\n" +
 				"(1) Poner tuberia\n" +
 				"(2) Simular\n" +
-                "(3) Para Salir"
+                "(3) Para Salir\n"
 				);
 		    option= sc.nextInt();
 		    sc.nextLine();
@@ -96,9 +96,9 @@ public class PipeMania {
 		boolean n = true, m = true;
 		switch(operation) {
 			case 1:
-				System.out.println("\n" + controller.printGrid());
+				System.out.println("\n\n\n" + controller.printGrid());
 				while (n){
-					System.out.println("¿En que posicion desea ponerla? (ingrese las coordenadas con el formato 'x,y')");
+					System.out.println("\n\n¿En que posicion desea ponerla? (ingrese las coordenadas con el formato 'x,y')\n");
 					coordinates = sc.next();
 					try{
 						row = Integer.parseInt(coordinates.charAt(0) + "");
@@ -106,26 +106,28 @@ public class PipeMania {
 						n = false;
 					}
 					catch (NumberFormatException e){
-						System.out.println("Coordenadas invalidas, intente de nuevo.");
+						System.out.println("\nCoordenadas invalidas, intente de nuevo.\n");
 					}
 				}
 
 				n = true;
 
 				while(n){
-					System.out.println("¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O");
+					System.out.println("\n\n¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O\n");
 					try{
 						pipeType = sc.nextInt();
 						pipeType+=2;
-						if(pipeType<3||pipeType>5) System.out.println("Tipo de tuberia invalido, intente de nuevo.");
+						if(pipeType<3||pipeType>5) System.out.println("\nTipo de tuberia invalido, intente de nuevo.\n");
 						else n = false;
 					}
 					catch (NumberFormatException e){
-						System.out.println("Tipo de tuberia invalido, Intehte de nuevo.");
+						System.out.println("\nTipo de tuberia invalido, Intehte de nuevo.\n");
 					}
 				}
 
-				if(!controller.play(row, col, pipeType)) System.out.println("Instruccion invalida");
+				if(!controller.play(row, col, pipeType)) System.out.println("\nInstruccion invalida\n");
+
+				System.out.println("\n\n\n" + controller.printGrid());
 
 				break;
 			case 2:
@@ -135,14 +137,14 @@ public class PipeMania {
 					System.out.println("\n\n\n"+holder);
 					m = false;
 				}
-				else System.out.println("Solucion incompleta");
+				else System.out.println("\nSolucion incompleta\n");
 				break;
 			case 3:
-				System.out.println("Regresando al menu");
+				System.out.println("\nRegresando al menu\n");
 				m = false;
 				break;
 			default:
-				System.out.println("Error, opción no válida");
+				System.out.println("\nError, opción no válida\n");
 			
 		}
 		return m;
