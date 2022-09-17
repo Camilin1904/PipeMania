@@ -21,22 +21,22 @@ public class Grid {
 		this.columns = columns;
 		this.rows = rows;
 		this.nickName = nickName;
-		int sRow = (int)((Math.random()*8)+1);
+		int sRow = (int)((Math.random()*8));
 		int sCol = (int)((Math.random()*8)+1);
 		int eRow = sRow;
-		while ((eRow = (int)((Math.random()*8)+1))==sRow);
+		while ((eRow = (int)((Math.random()*8)))==sRow);
 		int eCol = sCol;
-		while ((eCol=(int)((Math.random()*8)+1))==sCol);
-		head = create(1,1,0,new Pipe(6, "1,1"), null, sRow, sCol, eRow, eCol);
+		while ((eCol=(int)((Math.random()*8)))==sCol);
+		head = create(0,0,-1,new Pipe(6, "0,0"), null, sRow, sCol, eRow, eCol);
 	}
 
 
 
 	/**
 	 * Initializes the quadruple linked list that is used to store the playboard, it creates rows in an "s" pattern
-	 * @param r Must be 1 when first called
-	 * @param c Must be 1 when first called
-	 * @param lastC Must be 0 when first called
+	 * @param r Must be 0 when first called
+	 * @param c Must be 0 when first called
+	 * @param lastC Must be -1 when first called
 	 * @param current Must be a new pipe type object when first called
 	 * @param last	Must be null when first called
 	 * @return The head of the list
@@ -51,7 +51,7 @@ public class Grid {
 		
 		if (c>lastC){//This means the pipes are getting created to the right
 			current.setLeft(last);//sets its left to the last one
-			if (r!=1){//Unless it is located in the first row there is the need to set its upper pipe
+			if (r!=0){//Unless it is located in the first row there is the need to set its upper pipe
 				current.setUp(current.getLeft().getUp().getRight());//travels trough adjacent pipes to get to the pipe that would be up
 				current.getUp().setDown(current);
 			}
@@ -61,17 +61,17 @@ public class Grid {
 
 		else if (c<lastC){//This means the pipes are getting created to the left
 			current.setRight(last);
-			if (r!=1){
+			if (r!=0){
 				current.setUp(current.getRight().getUp().getLeft());
 				current.getUp().setDown(current);
 			}
-			if (c!=1) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
+			if (c!=0) current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
 			else if(r!=rows) current.setDown(create(r+1,c,c,new Pipe(6, (r+1)+","+c),current, sRow, sCol, eRow, eCol));
 		}
 
 		else if (c==lastC){//This means its last pipe its abvove it
 			current.setUp(last);
-			if (c==1) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));//depending on its position it sets the creation flow to the right or to the left
+			if (c==0) current.setRight(create(r, c+1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));//depending on its position it sets the creation flow to the right or to the left
 			else current.setLeft(create(r, c-1, c, new Pipe(6, r+","+(c+1)), current, sRow, sCol, eRow, eCol));
 		}
 
@@ -94,10 +94,10 @@ public class Grid {
 	 */
 	public boolean changePipeType(int row, int column, int pipeType) {
 		Pipe holder = head;
-		for (int r=1; r<row; r++){//to move to the row
+		for (int r=0; r<row; r++){//to move to the row
 			if(holder!=null) holder = holder.getRight();
 		}
-		for (int c=1; c<column; c++){//to move to the column
+		for (int c=0; c<column; c++){//to move to the column
 			if(holder!=null) holder = holder.getDown();
 		}
 		if (holder!=null){//to check for its existence
@@ -120,11 +120,11 @@ public class Grid {
 	 */
 	@Override
 	public String toString() {
-		String print = "   1    2    3    4    5    6    7    8 \n";
+		String print = "   0    1    2    3    4    5    6    7 \n";
 		Pipe holder = head, holder2 = head;
-		for (int row=1; row<=rows; row++){
+		for (int row=0; row<rows; row++){
 			print += row;
-			for (int column=1; column<=columns; column++){
+			for (int column=0; column<columns; column++){
 				print += " " + holder.toString() + " ";
 				holder = holder.getRight();
 			}
