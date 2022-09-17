@@ -125,7 +125,7 @@ public class PipeMania {
 					}
 				}
 
-				if(!controller.play(row, col, pipeType)) System.out.println("Instrucciomn invalida");
+				if(!controller.play(row, col, pipeType)) System.out.println("Instruccion invalida");
 
 				break;
 			case 2:
