@@ -4,6 +4,8 @@ import java.time.*;
 
 import java.time.Duration;
 
+import java.util.concurrent.TimeUnit;
+
 public class Controller {
 
 	private Instant start=null;
@@ -90,13 +92,23 @@ public class Controller {
 
         spaces="";
 
-        for(int i=0; i<Leaderboard.scoreToTime; i++){
+		long time = actual.getTimer().getSeconds();
+
+		int hours = (int)TimeUnit.SECONDS.toHours(time);
+
+		int minutes = (int)(TimeUnit.SECONDS.toMinutes(time)-TimeUnit.SECONDS.toHours(time)*60);
+
+		double seconds = (double)(time - TimeUnit.SECONDS.toMinutes(time)*60);
+
+        String timeFormat = hours + ":" + minutes + ":" + String.format("%.2f", seconds) + "] -\n";
+
+        for(int i=0; i<Leaderboard.scoreToTime-timeFormat.length(); i++){
 
             spaces+=space;
 
         }
 
-        out+= spaces + actual.getTimer().getSeconds()+ "] -\n";
+		out += spaces + timeFormat;
 
         spaces="";
 

@@ -2,15 +2,17 @@ package model;
 
 import java.util.ArrayList;
 
-import java.time.*;;
+import java.time.*;
+
+import java.util.concurrent.TimeUnit;
 
 public class Leaderboard {
 
 	private Score root;
 
-    public static final int nickToScore=20;
+    public static final int nickToScore=16;
 
-    public static final int scoreToTime=12;
+    public static final int scoreToTime=21;
 
 	public Leaderboard() {
 	}
@@ -147,7 +149,7 @@ public class Leaderboard {
 
             actual = topTen.get(counter);
 
-            int numOfSpace = nickToScore-(actual.getNickname().length()+(""+actual.getScore()).length());
+            int numOfSpace = nickToScore-(actual.getNickname().length());
 
             for(int i=0; i<numOfSpace; i++){
 
@@ -159,13 +161,23 @@ public class Leaderboard {
 
             spaces="";
 
-            for(int i=0; i<scoreToTime; i++){
+            long time = actual.getTimer().getSeconds();
+
+		    int hours = (int)TimeUnit.SECONDS.toHours(time);
+
+		    int minutes = (int)(TimeUnit.SECONDS.toMinutes(time)-TimeUnit.SECONDS.toHours(time)*60);
+
+		    double seconds = (double)(time - TimeUnit.SECONDS.toMinutes(time)*60);
+
+            String timeFormat =hours + ":" + minutes + ":" + String.format("%.2f", seconds);
+
+            for(int i=0; i<scoreToTime-(""+actual.getScore()).length()-timeFormat.length(); i++){
 
                 spaces+=space;
 
             }
 
-            out+= spaces + actual.getTimer().getSeconds()+ "] -\n";
+            out+=spaces + timeFormat+ "] -\n";
 
             spaces="";
 
