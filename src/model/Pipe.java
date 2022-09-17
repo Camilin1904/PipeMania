@@ -52,10 +52,10 @@ public class Pipe {
 		String hold = "";
 		switch (pipeType){
 			case START:
-				hold = " S ";
+				hold = " F ";
 				break;
 			case END:
-				hold =  " E ";
+				hold =  " D ";
 				break;
 			case HORIZONTAL:
 				hold = " = ";
