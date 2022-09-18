@@ -129,11 +129,11 @@ public class PipeManiaColors {
 				n = true;
 
 				while(n){
-					System.out.println("\n\n¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O\n");
+					System.out.println("\n\n¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O\n4)X\n");
 					try{
 						pipeType = sc.nextInt();
 						pipeType+=2;
-						if(pipeType<3||pipeType>5) System.out.println(ConsoleColors.RED+"\nTipo de tuberia invalido, intente de nuevo.\n"+ConsoleColors.RESET);
+						if(pipeType<3||pipeType>6) System.out.println(ConsoleColors.RED+"\nTipo de tuberia invalido, intente de nuevo.\n"+ConsoleColors.RESET);
 						else n = false;
 					}
 					catch (NumberFormatException e){

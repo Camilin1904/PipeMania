@@ -25,9 +25,7 @@ public class Leaderboard {
      * if the corresponding side is equal to null, it will be added there, otherwise the methos will be 
      * called again but it will compare it to next node
 	 */
-	public String add(String nickname, Duration timer, int score, Score current) {
-
-		String out="";
+	public void add(String nickname, Duration timer, int score, Score current) {
 
         Score newScore = new Score(nickname, score, timer);
 
@@ -47,8 +45,6 @@ public class Leaderboard {
 
                 current.setRight(newScore);
 
-                out="El nodo ha sido añadido";
-
             }else{
 
                 add(nickname, timer, score, current.getRight());
@@ -61,8 +57,6 @@ public class Leaderboard {
 
                 current.setLeft(newScore);
 
-                out="El nodo ha sido añadido";
-
             }else{
 
                 add(nickname, timer, score, current.getLeft());
@@ -70,9 +64,6 @@ public class Leaderboard {
             }
 
         }
-
-		return out;
-
 	}
 
 	

@@ -1,7 +1,5 @@
 package model;
 
-import java.io.Console;
-
 import ui.ConsoleColors;
 
 public class GridColors {

@@ -133,11 +133,11 @@ public class PipeMania {
 				n = true;
 
 				while(n){
-					System.out.println("\n\n¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O\n");
+					System.out.println("\n\n¿Que tipo de tuberia desea colocar?\n1)=\n2)| |\n3)O\n4)X\n");
 					try{
 						pipeType = sc.nextInt();
 						pipeType+=2;
-						if(pipeType<3||pipeType>5) System.out.println("\nTipo de tuberia invalido, intente de nuevo.\n");
+						if(pipeType<3||pipeType>6) System.out.println("\nTipo de tuberia invalido, intente de nuevo.\n");
 						else n = false;
 					}
 					catch (NumberFormatException e){

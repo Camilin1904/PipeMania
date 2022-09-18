@@ -22,7 +22,7 @@ public class Grid {
 		this.rows = rows;
 		this.nickName = nickName;
 		int sRow = (int)((Math.random()*8));
-		int sCol = (int)((Math.random()*8)+1);
+		int sCol = (int)((Math.random()*8));
 		int eRow = sRow;
 		while ((eRow = (int)((Math.random()*8)))==sRow);
 		int eCol = sCol;
