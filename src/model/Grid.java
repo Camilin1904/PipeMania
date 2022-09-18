@@ -149,9 +149,13 @@ public class Grid {
 	public String simulate(Pipe current, Pipe last){
 		String holder = null;
 		if(!current.getHasPassed()){
+
 			current.setHasPassed(true);
+
 			if (current.getPipeType()==PipeType.START||current.getPipeType()==PipeType.INTERSECTION){
+
 				if (current.getPipeType()==PipeType.START||last.getPipeType()==PipeType.VERTICAL){
+
 					switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
 						case "R":
 							holder = simulate(current.getRight(), current);
@@ -162,6 +166,7 @@ public class Grid {
 					}
 				}
 				if (current.getPipeType()==PipeType.START||last.getPipeType()==PipeType.HORIZONTAL){
+
 					switch (checkExistenceOf(PipeType.VERTICAL, last, current)){
 						case "D":
 							holder = simulate(current.getDown(), current);
@@ -173,6 +178,7 @@ public class Grid {
 				}
 			}
 			else if (current.getPipeType()==PipeType.HORIZONTAL){
+
 				switch (checkExistenceOf(PipeType.HORIZONTAL, last, current)){
 					case "R":
 						holder = simulate(current.getRight(), current);
@@ -192,6 +198,7 @@ public class Grid {
 				if(checkExistenceOf(PipeType.END, last, current).equals("R")||checkExistenceOf(PipeType.END, last, current).equals("L")) holder = nickName;
 			}
 			else if (current.getPipeType()==PipeType.VERTICAL){
+				
 				switch (checkExistenceOf(PipeType.VERTICAL, last, current)){
 					case "D":
 						holder = simulate(current.getDown(), current);

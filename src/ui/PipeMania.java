@@ -1,6 +1,8 @@
 package ui;
 
 import model.Controller;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -26,7 +28,7 @@ public class PipeMania {
 
 	public void menu() {
 
-		int option;
+		int option = 0;
 
 		do{System.out.println(
 				"\n\n\nSeleccione una opcion\n" +
@@ -34,9 +36,15 @@ public class PipeMania {
 				"(2) Ver puntaje\n" +
                 "(3) Para Salir\n"
 				);
-		    option= sc.nextInt();
-		    sc.nextLine();
-            executeOperation(option);
+			try{
+				option= sc.nextInt();
+				sc.nextLine();
+				executeOperation(option);
+			}
+			catch (InputMismatchException e){
+				System.out.println("\nInstruccion invalida.");
+			}
+		    
         }while(option!=3);
 	}
 
@@ -52,8 +60,6 @@ public class PipeMania {
 			String nickname = sc.next();
             
 			controller.initialize(nickname);
-			
-			System.out.println("\n\n\n"+controller.printGrid());
 			
 			innerMenu(nickname);
 
@@ -76,15 +82,23 @@ public class PipeMania {
 		int option;
 		boolean m = true;
 
-		do{System.out.println(
+		do{
+			System.out.println("\n\n\n" + controller.printGrid());
+			System.out.println(
 				"\n\nSeleccione una opcion\n" +
 				"(1) Poner tuberia\n" +
 				"(2) Simular\n" +
                 "(3) Para Salir\n"
 				);
-		    option= sc.nextInt();
-		    sc.nextLine();
-            m=innerExecuteOperation(option, nickname);
+			try{
+				option= sc.nextInt();
+				sc.nextLine();
+				m=innerExecuteOperation(option, nickname);
+			}
+			catch (InputMismatchException e){
+				System.out.println("\nInstruccion invalida.");
+			}
+		    
         }while(m);
 
 	}
@@ -96,18 +110,22 @@ public class PipeMania {
 		boolean n = true, m = true;
 		switch(operation) {
 			case 1:
-				System.out.println("\n\n\n" + controller.printGrid());
 				while (n){
 					System.out.println("\n\n¿En que posicion desea ponerla? (ingrese las coordenadas con el formato 'x,y')\n");
-					coordinates = sc.next();
-					try{
-						row = Integer.parseInt(coordinates.charAt(0) + "");
-						col = Integer.parseInt(coordinates.charAt(2) + "");
-						n = false;
+					if((coordinates = sc.next()).length()==3){
+						try{
+							row = Integer.parseInt(coordinates.charAt(0) + "");
+							col = Integer.parseInt(coordinates.charAt(2) + "");
+							n = false;
+						}
+						catch (NumberFormatException e){
+							System.out.println("\nCoordenadas invalidas, intente de nuevo.\n");
+						}
 					}
-					catch (NumberFormatException e){
-						System.out.println("\nCoordenadas invalidas, intente de nuevo.\n");
+					else{
+						System.out.println("\nCoordenadas invalidas, intente de nuevo.");
 					}
+					
 				}
 
 				n = true;
@@ -126,8 +144,6 @@ public class PipeMania {
 				}
 
 				if(!controller.play(row, col, pipeType)) System.out.println("\nInstruccion invalida\n");
-
-				System.out.println("\n\n\n" + controller.printGrid());
 
 				break;
 			case 2:
