@@ -138,7 +138,7 @@ public class PipeMania {
 						if(pipeType<3||pipeType>5) System.out.println("\nTipo de tuberia invalido, intente de nuevo.\n");
 						else n = false;
 					}
-					catch (NumberFormatException e){
+					catch (InputMismatchException e){
 						System.out.println("\nTipo de tuberia invalido, Intehte de nuevo.\n");
 					}
 				}
