@@ -24,9 +24,12 @@ public class Grid {
 		int sRow = (int)((Math.random()*8));
 		int sCol = (int)((Math.random()*8));
 		int eRow = sRow;
-		while ((eRow = (int)((Math.random()*8)))==sRow);
 		int eCol = sCol;
-		while ((eCol=(int)((Math.random()*8)))==sCol);
+		while (eRow==sRow&&eCol==sCol){
+			eRow = (int)((Math.random()*8));
+			eCol = (int)((Math.random()*8));
+		}
+		
 		head = create(0,0,-1,new Pipe(6, "0,0"), null, sRow, sCol, eRow, eCol);
 	}
 
