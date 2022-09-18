@@ -43,6 +43,7 @@ public class PipeMania {
 			}
 			catch (InputMismatchException e){
 				System.out.println("\nInstruccion invalida.");
+				sc.nextLine();
 			}
 		    
         }while(option!=3);
@@ -97,6 +98,7 @@ public class PipeMania {
 			}
 			catch (InputMismatchException e){
 				System.out.println("\nInstruccion invalida.");
+				sc.nextLine();
 			}
 		    
         }while(m);
@@ -138,7 +140,7 @@ public class PipeMania {
 						if(pipeType<3||pipeType>5) System.out.println("\nTipo de tuberia invalido, intente de nuevo.\n");
 						else n = false;
 					}
-					catch (InputMismatchException e){
+					catch (NumberFormatException e){
 						System.out.println("\nTipo de tuberia invalido, Intehte de nuevo.\n");
 					}
 				}
